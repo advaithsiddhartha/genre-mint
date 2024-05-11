@@ -51,8 +51,22 @@ chart = alt.Chart(df_chart).mark_line().encode(
             y=alt.Y('gross:Q', title='Gross earnings ($)'),
             color='genre:N'
             ).properties(height=320)
-st.write('Chart')
+st.write('Chart - 1')
 
 st.altair_chart(chart, use_container_width=True)
+st.write('Chart - 2')
 
+import plotly.graph_objects as go
 
+# Create a scatter plot with lines
+fig = go.Figure()
+
+# Add lines for each genre
+for genre, data in df_chart.groupby('genre'):
+    fig.add_trace(go.Scatter(x=data['year'], y=data['gross'], mode='lines+markers', name=genre))
+
+# Update layout
+fig.update_layout(xaxis_title='Year', yaxis_title='Gross earnings ($)', height=400)
+
+# Display Plotly figure using Streamlit
+st.plotly_chart(fig)
